@@ -4,10 +4,10 @@
 		"type": "ship",
 		"status": {
 			"type": "mobile",
-			"message": "Maersk Detector"
+			"message": " "
 		},
 		"information": {
-            "name": "Yeah Buoy",
+            "name": "Maersk Detector",
 			"size": "medium",
 			"latitude": 46.9952,
 			"longitude": -50.4987
@@ -21,7 +21,7 @@
 			"message": "NA"
 		},
 		"information": {
-            "name": "Ice Ice Maybe",
+            "name": "Iceberg 120",
 			"size": "large",
 			"latitude": 46.259656,
 			"longitude": -52.336030
@@ -32,10 +32,10 @@
 		"type": "ship",
 		"status": {
 			"type": "alert",
-			"message": "Atlantic Osprey"
+			"message": "Yoko Oh No"
 		},
 		"information": {
-            "name": "Yoko Oh No",
+            "name": "Atlantic Osprey",
 			"size": "small",
 			"latitude": 47.4578,
 			"longitude": -51.8555
@@ -46,10 +46,10 @@
 		"type": "rig",
 		"status": {
 			"type": "stationary",
-			"message": "Hebron Platform"
+			"message": "Yes B'y"
 		},
 		"information": {
-            "name": "Yes B'y",
+            "name": "Hebron Platform",
 			"size": "large",
 			"latitude": 46.5439,
 			"longitude": -48.4981
@@ -60,10 +60,10 @@
 		"type": "rig",
 		"status": {
 			"type": "stationary",
-			"message": "Hibernia Platform"
+			"message": "Yes B'y"
 		},
 		"information": {
-            "name": "Yes B'y",
+            "name": "Hibernia Platform",
 			"size": "large",
 			"latitude":  46.750433,
 			"longitude": -48.782933
@@ -74,10 +74,10 @@
 		"type": "rig",
 		"status": {
 			"type": "mobile",
-			"message": "TOI Henry Goodrich"
+			"message": "Yes B'y"
 		},
 		"information": {
-            "name": "Yes B'y",
+            "name": "TOI Henry Goodrich",
 			"size": "large",
 			"latitude":  46.7894,
 			"longitude": -48.0430
@@ -88,10 +88,10 @@
 		"type": "rig",
 		"status": {
 			"type": "mobile",
-			"message": "TOI Barents"
+			"message": "Yes B'y"
 		},
 		"information": {
-            "name": "Yes B'y",
+            "name": "TOI Barents",
 			"size": "large",
 			"latitude":  46.4900,
 			"longitude": -48.4597
@@ -102,10 +102,10 @@
 		"type": "rig",
 		"status": {
 			"type": "mobile",
-			"message": "Seadrill West Aquarious"
+			"message": "Yes B'y"
 		},
 		"information": {
-            "name": "Yes B'y",
+            "name": "Seadrill West Aquarious",
 			"size": "large",
 			"latitude":  47.8094,
 			"longitude": -53.8635
@@ -116,10 +116,10 @@
 		"type": "rig",
 		"status": {
 			"type": "mobile",
-			"message": "FPSO Terra Nova"
+			"message": "Yes B'y"
 		},
 		"information": {
-            "name": "Yes B'y",
+            "name": "FPSO Terra Nova",
 			"size": "large",
 			"latitude":  46.4756,
 			"longitude": -48.4809
@@ -130,10 +130,10 @@
 		"type": "rig",
 		"status": {
 			"type": "mobile",
-			"message": "FPSO Searose"
+			"message": "Yes B'y"
 		},
 		"information": {
-            "name": "Yes B'y",
+            "name": "FPSO Searose",
 			"size": "large",
 			"latitude":  46.7904,
 			"longitude": -48.0158

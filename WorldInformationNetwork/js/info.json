@@ -4,7 +4,7 @@
 		"type": "ship",
 		"status": {
 			"type": "stationary",
-			"message": ""
+			"message": "NA"
 		},
 		"information": {
             "name": "Yeah Buoy",
@@ -18,7 +18,7 @@
 		"type": "iceberg",
 		"status": {
 			"type": "mobile",
-			"message": ""
+			"message": "NA"
 		},
 		"information": {
             "name": "Ice Ice Maybe",
@@ -32,7 +32,7 @@
 		"type": "ship",
 		"status": {
 			"type": "alert",
-			"message": "Leafs lost again"
+			"message": "There is some trouble."
 		},
 		"information": {
             "name": "Yoko Oh No",

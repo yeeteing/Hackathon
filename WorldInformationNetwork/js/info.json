@@ -23,7 +23,7 @@
 		"information": {
             "name": "Iceberg 120",
 			"size": "large",
-			"latitude":  46.8000,
+			"latitude":  47.2000,
 			"longitude": -48.0158
 		}
 	},
@@ -137,6 +137,34 @@
 			"size": "large",
 			"latitude":  46.7904,
 			"longitude": -48.0158
+		}
+	},
+	"11": {
+		"id": 11,
+		"type": "iceberg",
+		"status": {
+			"type": "mobile",
+			"message": "NA"
+		},
+		"information": {
+            "name": "Iceberg 121",
+			"size": "large",
+			"latitude":  47.1000,
+			"longitude": -48.500
+		}
+	},
+	"12": {
+		"id": 12,
+		"type": "iceberg",
+		"status": {
+			"type": "mobile",
+			"message": "NA"
+		},
+		"information": {
+            "name": "Iceberg 122",
+			"size": "large",
+			"latitude": 47.4578,
+			"longitude": -52.0000
 		}
 	}
 }

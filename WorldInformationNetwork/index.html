@@ -1,342 +1,202 @@
-<!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset='utf-8' />
-    <title>Add an animated icon to the map</title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
-    <style>
-        body {
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
+     
+        <style>
+           
+            body{
+                background-color: rgb(49, 45, 45);
+            }
+            #map { position:absolute; top:12%; bottom:20%; width:67%; }
+            h2 {
+            list-style-type: none;
             margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+            padding: 1%;
+            color: rgb(238, 237, 237);
+            text-align: overflow-x;
+            overflow: hidden;
+            background-color: rgb(20, 20, 20);
+          }
+          .card {
+                float: right;
+                width: 30%;
+                color: rgb(238, 237, 237);;
+                }
+                
+                
+                #myImg { visibility: hidden; }
+                .infobar{
+                    background-color: #555;
+                    padding:5%;
+                    margin:2%;
+                    text-align: left;
+                }
+                #info { 
+                height: 15%; 
+                position: fixed; 
+                bottom:3.5%;
+                width:65%; 
+                color:rgb(238, 237, 237);
+                background-color: #555; 
+                padding-left:2%;
+                padding-top:2%
+            
+                text-align: left;
+                opacity: 1;
+                }
+           
+        </style>
 </head>
-
 <body>
 
-    <div id='map'></div>
+        <h2>
+            Global Information System
+                
+        </h2>
+       <div id='map'>
 
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1Ijoic3dpa3kiLCJhIjoiY2p3ZGp1dXkxMGVwcTQ0bnA4d2Qzd2xlbSJ9.5BxwU8PN4eIQxfqE8gflfg';
-
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v9',
-            center: [-52.712830,47.560539],
-            zoom: 6
-        });
-
-        var size = 200;
-
-        var pulsingDot = {
-            width: size,
-            height: size,
-            data: new Uint8Array(size * size * 4),
-
-            onAdd: function () {
-                var canvas = document.createElement('canvas');
-                canvas.width = this.width;
-                canvas.height = this.height;
-                this.context = canvas.getContext('2d');
-            },
-
-            render: function () {
-                var duration = 1000;
-                var t = (performance.now() % duration) / duration;
-
-                var radius = size / 2 * 0.3;
-                var outerRadius = size / 2 * 0.7 * t + radius;
-                var context = this.context;
-
-                // draw outer circle
-                context.clearRect(0, 0, this.width, this.height);
-                context.beginPath();
-                context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
-                context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
-                context.fill();
-
-                // draw inner circle
-                context.beginPath();
-                context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
-                context.fillStyle = 'rgba(255, 100, 100, 1)';
-                context.strokeStyle = 'white';
-                context.lineWidth = 2 + 4 * (1 - t);
-                context.fill();
-                context.stroke();
-
-                // update this image's data with data from the canvas
-                this.data = context.getImageData(0, 0, this.width, this.height).data;
-
-                // keep the map repainting
-                map.triggerRepaint();
-
-                // return `true` to let the map know that the image was updated
-                return true;
-            }
-        };
-
-        map.on('load', function () {
-            $.getJSON("js/info.json", function (data) {
-                $.each(data, function (key, val) {
-                    console.log(val);
-                    map.addLayer({
-                        "id": val.information.name,
-                        "type": "symbol",
-                        "source": {
-                            "type": "geojson",
-                            "data": {
-                                "type": "FeatureCollection",
-                                "features": [{
-                                    "type": "Feature",
-                                    "properties": {
-                                        "description": val.status.message
-                                    },
-                                    "geometry": {
-                                        "type": "Point",
-                                        "coordinates": [val.information
-                                            .longitude, val.information
-                                            .latitude
-                                        ]
-                                    }
-                                }]
-                            }
-                        },
-                        "layout": {
-                            "icon-image": "pulsing-dot"
-                        }
+                <script>
+                    mapboxgl.accessToken = 'pk.eyJ1Ijoic3dpa3kiLCJhIjoiY2p3ZGp1dXkxMGVwcTQ0bnA4d2Qzd2xlbSJ9.5BxwU8PN4eIQxfqE8gflfg';
+                    var map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v9'
                     });
-                // When a click event occurs on a feature in the places layer, open a popup at the
-                // location of the feature, with description HTML from its properties.
-                map.on('click', val.information.name, function (e) {
-                    var coordinates = e.features[0].geometry.coordinates.slice();
-                    var description = e.features[0].properties.description;
-
-                    // Ensure that if the map is zoomed out such that multiple
-                    // copies of the feature are visible, the popup appears
-                    // over the copy being pointed to.
-                    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                    }
-
-                    new mapboxgl.Popup()
-                        .setLngLat(coordinates)
-                        .setHTML(description)
-                        .addTo(map);
-                });
-
-                // Change the cursor to a pointer when the mouse is over the places layer.
-                map.on('mouseenter', val.information.name, function () {
-                    map.getCanvas().style.cursor = 'pointer';
-                });
-
-                // Change it back to a pointer when it leaves.
-                map.on('mouseleave', val.information.name, function () {
-                    map.getCanvas().style.cursor = '';
-                });
-            });
-                });
-
-            map.addImage('pulsing-dot', pulsingDot, {
-                pixelRatio: 2
-            });
-
-            /* map.addLayer({
-                 "id": "points",
-                 "type": "symbol",
-                 "source": {
-                     "type": "geojson",
-                     "data": {
-                         "type": "FeatureCollection",
-                         "features": [{
-                             "type": "Feature",
-                             "geometry": {
-                                 "type": "Point",
-                                 "coordinates": [-50.336030, 48.259656]
-                             }
-                         }]
-                     }
-                 },
-                 "layout": {
-                     "icon-image": "pulsing-dot"
-                 }
-             });*/
-
-
-            //add iceburg, rig, ship
-            var impactZone = {
-                width: size,
-                height: size,
-                data: new Uint8Array(size * size * 4),
-
-                onAdd: function () {
-                    var canvas = document.createElement('canvas');
-                    canvas.width = this.width;
-                    canvas.height = this.height;
-                    this.context = canvas.getContext('2d');
-                },
-
-                render: function () {
-                    var duration = 1000;
-                    var t = (performance.now() % duration) / duration;
-                    var scale = 1;
-                    var radius = scale * size / 2 * 0.3;
-                    var outerRadius = scale * size / 2 * 0.7 * t + radius;
-                    var context = this.context;
-
-                    // draw outer circle
-                    context.clearRect(0, 0, this.width, this.height);
-                    context.beginPath();
-                    context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
-                    context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
-                    context.fill();
-
-                    // draw inner circle
-                    context.beginPath();
-                    context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
-                    context.fillStyle = 'rgba(255, 255, 255, 0)';
-                    context.strokeStyle = 'transparent';
-                    context.lineWidth = 2 + 4 * (1 - t);
-                    context.fill();
-                    context.stroke();
-
-                    // update this image's data with data from the canvas
-                    this.data = context.getImageData(0, 0, this.width, this.height).data;
-
-                    // keep the map repainting
-                    map.triggerRepaint();
-
-                    // return `true` to let the map know that the image was updated
-                    return true;
-                }
-            }
-            map.addImage('impact-zone', impactZone, {
-                pixelRatio: 2
-            });
-
-            map.addLayer({
-                "id": "rig",
-                "type": "symbol",
-                "source": {
-                    "type": "geojson",
-                    "data": {
-                        "type": "FeatureCollection",
-                        "features": [{
-                            "type": "Feature",
-                            "geometry": {
-                                "type": "Point",
-                                "coordinates": [-51.6604, 49.1355]
+                    var size = 100;
+                    var pulsingDot = {
+                        width: size,
+                        height: size,
+                        data: new Uint8Array(size * size * 4),
+                        onAdd: function () {
+                            var canvas = document.createElement('canvas');
+                            canvas.width = this.width;
+                            canvas.height = this.height;
+                            this.context = canvas.getContext('2d');
+                        },
+                        render: function () {
+                            var duration = 1000;
+                            var t = (performance.now() % duration) / duration;
+                            var radius = size / 2 * 0.3;
+                            var outerRadius = size / 2 * 0.7 * t + radius;
+                            var context = this.context;
+                            // draw outer circle
+                            context.clearRect(0, 0, this.width, this.height);
+                            context.beginPath();
+                            context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
+                            context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+                            context.fill();
+                            // draw inner circle
+                            context.beginPath();
+                            context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
+                            context.fillStyle = 'rgba(255, 100, 100, 1)';
+                            context.strokeStyle = 'white';
+                            context.lineWidth = 2 + 4 * (1 - t);
+                            context.fill();
+                            context.stroke();
+                            // update this image's data with data from the canvas
+                            this.data = context.getImageData(0, 0, this.width, this.height).data;
+                            // keep the map repainting
+                            map.triggerRepaint();
+                            // return `true` to let the map know that the image was updated
+                            return true;
+                        }
+                    };
+                    map.on('load', function () {
+                        $.getJSON("js/info.json", function (data) {
+                            $.each(data, function (key, val) {
+                                console.log(val);
+                                map.addLayer({
+                                    "id": val.information.name,
+                                    "type": "symbol",
+                                    "source": {
+                                        "type": "geojson",
+                                        "data": {
+                                            "type": "FeatureCollection",
+                                            "features": [{
+                                                "type": "Feature",
+                                                "properties":{
+                                                    "description":val.status.message
+                                                },
+                                                "geometry": {
+                                                    "type": "Point",
+                                                    "coordinates": [val.information.longitude, val.information.latitude]
+                                                }
+                                            }]
+                                        }
+                                    },
+                                    "layout": {
+                                        "icon-image": "pulsing-dot"
+                                    }
+                                });
+                            });
+                        });
+                        map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+                       /* map.addLayer({
+                            "id": "points",
+                            "type": "symbol",
+                            "source": {
+                                "type": "geojson",
+                                "data": {
+                                    "type": "FeatureCollection",
+                                    "features": [{
+                                        "type": "Feature",
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [-50.336030, 48.259656]
+                                        }
+                                    }]
+                                }
+                            },
+                            "layout": {
+                                "icon-image": "pulsing-dot"
                             }
-                        }]
-                    }
-                },
-                "layout": {
-                    "icon-image": "impact-zone",
-                    "icon-allow-overlap": true
-                }
-            });
+                        });*/
+                    });
+                </script>
+        </div>
+        <div class="card">
+                <h3>Information</h3>
+                    
+                <div class="infobar"><p>Iceberg! ---------- 5km</p></div>
+                <div class="infobar"><p>Iceberg! ---------- 5km</p></div>
+                <div class="infobar"><p>Iceberg! ---------- 5km</p></div>
+                <div class="infobar"><p>Iceberg! ---------- 5km</p></div>
+                <div class="infobar"><p>Iceberg! ---------- 5km</p></div>
+        </div>
+        <div id="info">
+            <P>Filter</P>
+        </div>
+        <!--<div class="popup" onclick="myFunction()"><button>Click me to toggle the popup!</button>
+                <span class="popuptext" id="myPopup">A Simple Popup!</span>
+              </div>
+              
+        <script>
+        // When the user clicks on div, open the popup
+        function myFunction() {
+            var img = document.getElementById('myImageId');
+             img.style.visibility = 'visible';
+        }
+        </script>
+        -->
+        <!--<button id="showImage">Click me</button>
+        <div>
+            //trigger model
+            
+            <img id="myImg" src="download.jpg">
 
+        </div>
+        <script>
+                document.getElementById("showImage").onclick = function() {
+                document.getElementById("myImg").style.visibility = "visible";
+            }
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
 
-
-            /* Image: An image is loaded and added to the map. */
-            map.loadImage("https://i.ibb.co/HXzzmgF/Webp-net-resizeimage.png", function (error, image) {
-                if (error) throw error;
-                map.addImage("ship1", image);
-                /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
-                map.addLayer({
-                    id: "markers",
-                    type: "symbol",
-                    /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
-                    source: {
-                        type: "geojson",
-                        data: {
-                            type: 'FeatureCollection',
-                            features: [{
-                                type: 'Feature',
-                                properties: {},
-                                geometry: {
-                                    type: "Point",
-                                    coordinates: [-50.712830, 47.560539]
-                                }
-                            }]
-                        }
-                    },
-                    layout: {
-                        "icon-image": "ship1",
-                    }
-                });
-            });
-
-
-
-            map.loadImage("https://i.ibb.co/r6PqCwZ/Webp-net-resizeimage-1.png", function (error, image) {
-                if (error) throw error;
-                map.addImage("iceburg1", image);
-                /* Style layer: A style layer ties together the source and image and specifies how they are displayed on the map. */
-                map.addLayer({
-                    id: "iceburg",
-                    type: "symbol",
-                    /* Source: A data source specifies the geographic coordinate where the image marker gets placed. */
-                    source: {
-                        type: "geojson",
-                        data: {
-                            type: 'FeatureCollection',
-                            features: [{
-                                type: 'Feature',
-                                properties: {},
-                                geometry: {
-                                    type: "Point",
-                                    coordinates: [-52.712830, 49.560539]
-                                }
-                            }]
-                        }
-                    },
-                    layout: {
-                        "icon-image": "iceburg1",
-                    }
-                });
-            });
-
-            map.loadImage(" https://i.ibb.co/b5YjYFp/Webp-net-resizeimage-2.png", function (error, image) {
-                if (error) throw error;
-                map.addImage("rig1", image);
-                map.addLayer({
-                    id: "rig2",
-                    type: "symbol",
-                    source: {
-                        type: "geojson",
-                        data: {
-                            type: 'FeatureCollection',
-                            features: [{
-                                type: 'Feature',
-                                properties: {},
-                                geometry: {
-                                    type: "Point",
-                                    coordinates: [-51.6604, 49.1355]
-                                }
-                            }]
-                        }
-                    },
-                    layout: {
-                        "icon-image": "rig1",
-                        "icon-allow-overlap": true
-                    }
-                });
-            });
-
-        });
-    </script>
-
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+        modal.style.display = "none";
+        }
+          </script>-->
 </body>
-
 </html>

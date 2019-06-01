@@ -37,8 +37,22 @@
 		"information": {
             "name": "Yoko Oh No",
 			"size": "small",
-			"latitude": 18.259656,
+			"latitude": 44.259656,
 			"longitude": -60.336030
+		}
+	},
+	"4": {
+		"id": 3,
+		"type": "rig",
+		"status": {
+			"type": "stationary",
+			"message": "NA"
+		},
+		"information": {
+            "name": "Yes B'y",
+			"size": "large",
+			"latitude": 44.259656,
+			"longitude": -55.336030
 		}
 	}
 }

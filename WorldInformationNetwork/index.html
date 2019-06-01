@@ -72,11 +72,12 @@
         <script>
             mapboxgl.accessToken = 'pk.eyJ1Ijoic3dpa3kiLCJhIjoiY2p3ZGp1dXkxMGVwcTQ0bnA4d2Qzd2xlbSJ9.5BxwU8PN4eIQxfqE8gflfg';
             var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v9',
-            center: [-52.712830, 47.560539],
-            zoom: 5
-        });
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v9',
+                center: [-52.712830, 47.560539],
+                zoom: 5
+            });
+
             var size = 100;
             var pulsingDot = {
                 width: size,
@@ -121,11 +122,12 @@
                     $.each(data, function (key, val) {
                         console.log(val);
                         var imgType = "";
-                        if (val.type == "ship") {
+                        var iconClass = val.type;
+                        if (iconClass == "ship") {
                             imgType = "https://i.ibb.co/HXzzmgF/Webp-net-resizeimage.png";
-                        } else if (val.type == "iceberg") {
+                        } else if (iconClass == "iceberg") {
                             imgType = "https://i.ibb.co/r6PqCwZ/Webp-net-resizeimage-1.png";
-                        } else if (val.type == "rig") {
+                        } else if (iconClass == "rig") {
                             imgType = "https://i.ibb.co/b5YjYFp/Webp-net-resizeimage-2.png";
                         }
                         map.loadImage(imgType, function (error, image) {
@@ -141,7 +143,7 @@
                                         "features": [{
                                             "type": "Feature",
                                             "properties": {
-                                                "description": val.status.message
+                                                "description": val.information.name + "<br />" + val.status.message
                                             },
                                             "geometry": {
                                                 "type": "Point",
@@ -210,50 +212,50 @@
                 });
             });
             map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
-            
+
             //add iceburg, rig, ship
-        var impactZone = {
-            width: size,
-            height: size,
-            data: new Uint8Array(size * size * 4),
-            onAdd: function () {
-                var canvas = document.createElement('canvas');
-                canvas.width = this.width;
-                canvas.height = this.height;
-                this.context = canvas.getContext('2d');
-            },
-            render: function () {
-                var duration = 1000;
-                var t = (performance.now() % duration) / duration;
-                var scale = 1;
-                var radius = scale * size / 2 * 0.3;
-                var outerRadius = scale * size / 2 * 0.7 * t + radius;
-                var context = this.context;
-                // draw outer circle
-                context.clearRect(0, 0, this.width, this.height);
-                context.beginPath();
-                context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
-                context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
-                context.fill();
-                // draw inner circle
-                context.beginPath();
-                context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
-                context.fillStyle = 'rgba(255, 255, 255, 0)';
-                context.strokeStyle = 'transparent';
-                context.lineWidth = 2 + 4 * (1 - t);
-                context.fill();
-                context.stroke();
-                // update this image's data with data from the canvas
-                this.data = context.getImageData(0, 0, this.width, this.height).data;
-                // keep the map repainting
-                map.triggerRepaint();
-                // return `true` to let the map know that the image was updated
-                return true;
+            var impactZone = {
+                width: size,
+                height: size,
+                data: new Uint8Array(size * size * 4),
+                onAdd: function () {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = this.width;
+                    canvas.height = this.height;
+                    this.context = canvas.getContext('2d');
+                },
+                render: function () {
+                    var duration = 1000;
+                    var t = (performance.now() % duration) / duration;
+                    var scale = 1;
+                    var radius = scale * size / 2 * 0.3;
+                    var outerRadius = scale * size / 2 * 0.7 * t + radius;
+                    var context = this.context;
+                    // draw outer circle
+                    context.clearRect(0, 0, this.width, this.height);
+                    context.beginPath();
+                    context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
+                    context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+                    context.fill();
+                    // draw inner circle
+                    context.beginPath();
+                    context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
+                    context.fillStyle = 'rgba(255, 255, 255, 0)';
+                    context.strokeStyle = 'transparent';
+                    context.lineWidth = 2 + 4 * (1 - t);
+                    context.fill();
+                    context.stroke();
+                    // update this image's data with data from the canvas
+                    this.data = context.getImageData(0, 0, this.width, this.height).data;
+                    // keep the map repainting
+                    map.triggerRepaint();
+                    // return `true` to let the map know that the image was updated
+                    return true;
+                }
             }
-        }
         </script>
     </div>
-    <div class="card">
+    <div id="info" class="card">
         <h3>Information</h3>
 
         <div class="infobar">
@@ -272,8 +274,8 @@
             <p>Iceberg! ---------- 5km</p>
         </div>
     </div>
-    <div id="info">
-        <P>Filter</P>
+    <div id="filter">
+
     </div>
 </body>
 

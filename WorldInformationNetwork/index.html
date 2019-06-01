@@ -72,9 +72,11 @@
         <script>
             mapboxgl.accessToken = 'pk.eyJ1Ijoic3dpa3kiLCJhIjoiY2p3ZGp1dXkxMGVwcTQ0bnA4d2Qzd2xlbSJ9.5BxwU8PN4eIQxfqE8gflfg';
             var map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v9'
-            });
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [-52.712830, 47.560539],
+            zoom: 5
+        });
             var size = 100;
             var pulsingDot = {
                 width: size,

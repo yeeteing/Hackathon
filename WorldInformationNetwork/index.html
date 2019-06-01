@@ -26,18 +26,15 @@
             overflow: hidden;
             background-color: rgb(20, 20, 20);
         }
-
-        .card {
+       #card {
             float: right;
             width: 30%;
             color: rgb(238, 237, 237);
+            visibility: hidden;
             ;
         }
 
 
-        #myImg {
-            visibility: hidden;
-        }
 
         .infobar {
             background-color: #555;
@@ -45,9 +42,9 @@
             margin: 2%;
             text-align: left;
         }
-
+       
         #info {
-            height: 15%;
+            height: 10%;
             position: fixed;
             bottom: 3.5%;
             width: 65%;
@@ -192,6 +189,7 @@
                             // Ensure that if the map is zoomed out such that multiple
                             // copies of the feature are visible, the popup appears
                             // over the copy being pointed to.
+
                             while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                             }
@@ -199,6 +197,17 @@
                                 .setLngLat(coordinates)
                                 .setHTML(description)
                                 .addTo(map);
+                            
+                            document.getElementById("card").style.visibility = "visible";
+                            
+                            var textNa= "Name: "+ val.information.name;
+                            var textSi= "Size: "+ val.information.size;
+                            var textla= "Latitude: "+ val.information.latitude;
+                            var textlo= "longitude: "+ val.information.longitude;
+                            document.getElementById('infoName').innerHTML = textNa;
+                            document.getElementById('infoSize').innerHTML = textSi;
+                            document.getElementById('infoLa').innerHTML = textla;
+                            document.getElementById('infoLo').innerHTML = textlo;
                         });
                         // Change the cursor to a pointer when the mouse is over the places layer.
                         map.on('mouseenter', val.information.name, function () {
@@ -255,26 +264,25 @@
             }
         </script>
     </div>
-    <div class="card">
-        <h3>Information</h3>
-
-        <div class="infobar">
-            <p>Iceberg! ---------- 5km</p>
+    
+    
+        <div id="card">
+                <h3>Information</h3>
+                <div >
+                <div id="infoName" class="infobar">
+                
+                </div>
+                <div id="infoSize" class="infobar">
+                
+                </div>
+                <div id="infoLa" class="infobar">
+                
+                </div>
+                <div id="infoLo" class="infobar">
+                    
+                </div>
+            </div>
         </div>
-        <div class="infobar">
-            <p>Iceberg! ---------- 5km</p>
-        </div>
-        <div class="infobar">
-            <p>Iceberg! ---------- 5km</p>
-        </div>
-        <div class="infobar">
-            <p>Iceberg! ---------- 5km</p>
-        </div>
-        <div class="infobar">
-            <p>Iceberg! ---------- 5km</p>
-        </div>
-    </div>
-    <div id="info">
 
     </div>
 </body>

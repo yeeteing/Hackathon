@@ -1,0 +1,44 @@
+{
+	"1": {
+		"id": 1,
+		"type": "ship",
+		"status": {
+			"type": "stationary",
+			"message": ""
+		},
+		"information": {
+            "name": "Yeah Buoy",
+			"size": "medium",
+			"latitude": 48.259656,
+			"longitude": -50.336030
+		}
+	},
+	"2": {
+		"id": 2,
+		"type": "iceberg",
+		"status": {
+			"type": "mobile",
+			"message": ""
+		},
+		"information": {
+            "name": "Ice Ice Maybe",
+			"size": "large",
+			"latitude": 46.259656,
+			"longitude": -52.336030
+		}
+	},
+	"3": {
+		"id": 3,
+		"type": "ship",
+		"status": {
+			"type": "alert",
+			"message": "Leafs lost again"
+		},
+		"information": {
+            "name": "Yoko Oh No",
+			"size": "small",
+			"latitude": 18.259656,
+			"longitude": -60.336030
+		}
+	}
+}

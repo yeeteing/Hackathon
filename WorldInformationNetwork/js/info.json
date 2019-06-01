@@ -3,14 +3,14 @@
 		"id": 1,
 		"type": "ship",
 		"status": {
-			"type": "stationary",
-			"message": "NA"
+			"type": "mobile",
+			"message": "Maersk Detector"
 		},
 		"information": {
             "name": "Yeah Buoy",
 			"size": "medium",
-			"latitude": 48.259656,
-			"longitude": -50.336030
+			"latitude": 46.9952,
+			"longitude": -50.4987
 		}
 	},
 	"2": {
@@ -32,13 +32,13 @@
 		"type": "ship",
 		"status": {
 			"type": "alert",
-			"message": "There is some trouble."
+			"message": "Atlantic Osprey"
 		},
 		"information": {
             "name": "Yoko Oh No",
 			"size": "small",
-			"latitude": 44.259656,
-			"longitude": -60.336030
+			"latitude": 47.4578,
+			"longitude": -51.8555
 		}
 	},
 	"4": {

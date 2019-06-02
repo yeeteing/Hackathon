@@ -71,132 +71,144 @@
 
     <div id='map'></div>
 
-        <script>
-            mapboxgl.accessToken = 'pk.eyJ1Ijoic3dpa3kiLCJhIjoiY2p3ZGp1dXkxMGVwcTQ0bnA4d2Qzd2xlbSJ9.5BxwU8PN4eIQxfqE8gflfg';
-            var map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v9',
-                center: [-52.712830, 47.560539],
-                zoom: 5
-            });
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic3dpa3kiLCJhIjoiY2p3ZGp1dXkxMGVwcTQ0bnA4d2Qzd2xlbSJ9.5BxwU8PN4eIQxfqE8gflfg';
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v9',
+            center: [-52.712830, 47.560539],
+            zoom: 5
+        });
 
-            var size = 100;
-            var pulsingDot = {
-                width: size,
-                height: size,
-                data: new Uint8Array(size * size * 4),
-                onAdd: function () {
-                    var canvas = document.createElement('canvas');
-                    canvas.width = this.width;
-                    canvas.height = this.height;
-                    this.context = canvas.getContext('2d');
-                },
-                render: function () {
-                    var duration = 1000;
-                    var t = (performance.now() % duration) / duration;
-                    var radius = size / 2 * 0.3;
-                    var outerRadius = size / 2 * 0.7 * t + radius;
-                    var context = this.context;
-                    // draw outer circle
-                    context.clearRect(0, 0, this.width, this.height);
-                    context.beginPath();
-                    context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
-                    context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
-                    context.fill();
-                    // draw inner circle
-                    context.beginPath();
-                    context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
-                    context.fillStyle = 'rgba(255, 100, 100, 1)';
-                    context.strokeStyle = 'white';
-                    context.lineWidth = 2 + 4 * (1 - t);
-                    context.fill();
-                    context.stroke();
-                    // update this image's data with data from the canvas
-                    this.data = context.getImageData(0, 0, this.width, this.height).data;
-                    // keep the map repainting
-                    map.triggerRepaint();
-                    // return `true` to let the map know that the image was updated
-                    return true;
-                }
-            };
+        var size = 100;
+        var pulsingDot = {
+            width: size,
+            height: size,
+            data: new Uint8Array(size * size * 4),
+            onAdd: function () {
+                var canvas = document.createElement('canvas');
+                canvas.width = this.width;
+                canvas.height = this.height;
+                this.context = canvas.getContext('2d');
+            },
+            render: function () {
+                var duration = 1000;
+                var t = (performance.now() % duration) / duration;
+                var radius = size / 2 * 0.3;
+                var outerRadius = size / 2 * 0.7 * t + radius;
+                var context = this.context;
+                // draw outer circle
+                context.clearRect(0, 0, this.width, this.height);
+                context.beginPath();
+                context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
+                context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+                context.fill();
+                // draw inner circle
+                context.beginPath();
+                context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
+                context.fillStyle = 'rgba(255, 100, 100, 1)';
+                context.strokeStyle = 'white';
+                context.lineWidth = 2 + 4 * (1 - t);
+                context.fill();
+                context.stroke();
+                // update this image's data with data from the canvas
+                this.data = context.getImageData(0, 0, this.width, this.height).data;
+                // keep the map repainting
+                map.triggerRepaint();
+                // return `true` to let the map know that the image was updated
+                return true;
+            }
+        };
 
-            $().ready(function () {
-                var filterGroup = document.getElementById('filter-group');
-                map.on('load', function () {
-                    $.getJSON("js/info.json", function (data) {
-                        $.each(data, function (key, val) {
-                            console.log(val);
-                            var imgType = "";
-                            var iconClass = val.type;
-                            var layerID = val.type + "-" + key;
+        $().ready(function () {
+            var filterGroup = document.getElementById('filter-group');
+            map.on('load', function () {
+                $.getJSON("js/info.json", function (data) {
+                    $.each(data, function (key, val) {
+                        console.log(val);
+                        var imgType = "";
+                        var iconClass = val.type;
+                        var layerID = val.type + "-" + key;
 
-                            if (iconClass == "ship") {
-                                imgType = "https://i.ibb.co/HXzzmgF/Webp-net-resizeimage.png";
-                            } else if (iconClass == "iceberg") {
-                                imgType = "https://i.ibb.co/r6PqCwZ/Webp-net-resizeimage-1.png";
-                            } else if (iconClass == "rig") {
-                                imgType = "https://i.ibb.co/b5YjYFp/Webp-net-resizeimage-2.png";
-                            }
-                            map.loadImage(imgType, function (error, image) {
-                                if (error) throw error;
-                                map.addImage(val.type + key, image);
-                                map.addLayer({
-                                    id: val.type + "-" + key,
-                                    type: "symbol",
-                                    source: {
-                                        "type": "geojson",
-                                        "data": {
-                                            "type": "FeatureCollection",
-                                            "className": val.type,
-                                            "features": [{
-                                                "type": "Feature",
-                                                "properties": {
-                                                    "description": "<strong>" + val.information.name + "</strong><br />" + val.status.message
-                                                },
-                                                "geometry": {
-                                                    "type": "Point",
-                                                    "coordinates": [val.information.longitude, val.information.latitude]
-                                                }
-                                            }]
-                                        }
-                                    },
-                                    layout: {
-                                        "icon-image": val.type + key,
-                                        "icon-allow-overlap": true
+                        if (iconClass == "ship") {
+                            imgType = "https://i.ibb.co/HXzzmgF/Webp-net-resizeimage.png";
+                        } else if (iconClass == "iceberg") {
+                            imgType = "https://i.ibb.co/r6PqCwZ/Webp-net-resizeimage-1.png";
+                        } else if (iconClass == "rig") {
+                            imgType = "https://i.ibb.co/b5YjYFp/Webp-net-resizeimage-2.png";
+                        }
+                        map.loadImage(imgType, function (error, image) {
+                            if (error) throw error;
+                            map.addImage(val.type + key, image);
+                            map.addLayer({
+                                id: val.type + "-" + key,
+                                type: "symbol",
+                                source: {
+                                    "type": "geojson",
+                                    "data": {
+                                        "type": "FeatureCollection",
+                                        "className": val.type,
+                                        "features": [{
+                                            "type": "Feature",
+                                            "properties": {
+                                                "description": "<strong>" + val.information.name + "</strong><br />" + val.status.message
+                                            },
+                                            "geometry": {
+                                                "type": "Point",
+                                                "coordinates": [val.information.longitude, val.information.latitude]
+                                            }
+                                        }]
                                     }
-                                });
+                                },
+                                layout: {
+                                    "icon-image": val.type + key,
+                                    "icon-allow-overlap": true
+                                }
                             });
-                            if (val.status.type == "alert") {
-                                map.addImage('impact-zone', impactZone, {
-                                    pixelRatio: 2
-                                });
-                                map.addLayer({
-                                    "id": val.type + "-" + key + key,
-                                    "type": "symbol",
-                                    "source": {
-                                        "type": "geojson",
-                                        "data": {
-                                            "type": "FeatureCollection",
-                                            "features": [{
-                                                "type": "Feature",
-                                                "geometry": {
-                                                    "type": "Point",
-                                                    "coordinates": [val.information.longitude, val.information.latitude]
-                                                }
-                                            }]
-                                        }
-                                    },
-                                    "layout": {
-                                        "icon-image": "impact-zone",
-                                        "icon-allow-overlap": true
+                        });
+                        if (val.status.type == "alert") {
+                            map.addImage('impact-zone', impactZone, {
+                                pixelRatio: 2
+                            });
+                            map.addLayer({
+                                "id": val.type + "-" + key + key,
+                                "type": "symbol",
+                                "source": {
+                                    "type": "geojson",
+                                    "data": {
+                                        "type": "FeatureCollection",
+                                        "features": [{
+                                            "type": "Feature",
+                                            "geometry": {
+                                                "type": "Point",
+                                                "coordinates": [val.information.longitude, val.information.latitude]
+                                            }
+                                        }]
                                     }
-                                });
+                                },
+                                "layout": {
+                                    "icon-image": "impact-zone",
+                                    "icon-allow-overlap": true
+                                }
+                            });
+                        }
+                        // When a click event occurs on a feature in the places layer, open a popup at the
+                        // location of the feature, with description HTML from its properties.
+                        map.on('click', val.type + "-" + key, function (e) {
+                            var coordinates = e.features[0].geometry.coordinates.slice();
+                            var description = e.features[0].properties.description;
+
+                            var fileName = val.information.file;
+                            if (!isEmpty(fileName)){
+                                var fileLink = "<br /><a href='" + fileName + "'>File</a>";
+                                description = description + fileLink;
                             }
-                            // When a click event occurs on a feature in the places layer, open a popup at the
-                            // location of the feature, with description HTML from its properties.
-                            map.on('click', val.type + "-" + key, function (e) {
-                                var coordinates = e.features[0].geometry.coordinates.slice();
-                                var description = e.features[0].properties.description;
+
+                            var videoName = val.information.vid;
+                            if (!isEmpty(videoName)){
+                                var vidLink = "<br /><a href='" + videoName + "'>Video</a>";
+                                description = description + vidLink;
+                            }
                                 // Ensure that if the map is zoomed out such that multiple
                                 // copies of the feature are visible, the popup appears
                                 // over the copy being pointed to.
@@ -204,118 +216,126 @@
                                 while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
                                     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
                                 }
-                                new mapboxgl.Popup()
-                                    .setLngLat(coordinates)
-                                    .setHTML(description)
-                                    .addTo(map);
+                            new mapboxgl.Popup()
+                                .setLngLat(coordinates)
+                                .setHTML(description)
+                                .addTo(map);
 
-                                document.getElementById("card").style.visibility = "visible";
-                                document.getElementById("map").style.width = "68%";
+                            document.getElementById("card").style.visibility = "visible";
+                            document.getElementById("map").style.width = "68%";
 
 
-                                var textNa = "Name: " + val.information.name;
-                                var textSi = "Size: " + val.information.size;
-                                var textla = "Latitude: " + val.information.latitude;
-                                var textlo = "longitude: " + val.information.longitude;
-                                document.getElementById('infoName').innerHTML = textNa;
-                                document.getElementById('infoSize').innerHTML = textSi;
-                                document.getElementById('infoLa').innerHTML = textla;
-                                document.getElementById('infoLo').innerHTML = textlo;
-                            });
-                            // Change the cursor to a pointer when the mouse is over the places layer.
-                            map.on('mouseenter', val.type + "-" + key, function () {
-                                map.getCanvas().style.cursor = 'pointer';
-                            });
-                            // Change it back to a pointer when it leaves.
-                            map.on('mouseleave', val.type + "-" + key, function () {
-                                map.getCanvas().style.cursor = '';
-                            });
+                            var textNa = "Name: " + val.information.name;
+                            var textSi = "Size: " + val.information.size;
+                            var textla = "Latitude: " + val.information.latitude;
+                            var textlo = "longitude: " + val.information.longitude;
+                            document.getElementById('infoName').innerHTML = textNa;
+                            document.getElementById('infoSize').innerHTML = textSi;
+                            document.getElementById('infoLa').innerHTML = textla;
+                            document.getElementById('infoLo').innerHTML = textlo;
+                        });
+                        // Change the cursor to a pointer when the mouse is over the places layer.
+                        map.on('mouseenter', val.type + "-" + key, function () {
+                            map.getCanvas().style.cursor = 'pointer';
+                        });
+                        // Change it back to a pointer when it leaves.
+                        map.on('mouseleave', val.type + "-" + key, function () {
+                            map.getCanvas().style.cursor = '';
+                        });
 
-                            // Add checkbox and label elements for the layer.
-                            var input = document.createElement('input');
-                            input.type = 'checkbox';
-                            input.id = layerID;
-                            input.checked = true;
-                            filterGroup.appendChild(input);
+                        // Add checkbox and label elements for the layer.
+                        var input = document.createElement('input');
+                        input.type = 'checkbox';
+                        input.id = layerID;
+                        input.checked = true;
+                        filterGroup.appendChild(input);
 
-                            var label = document.createElement('label');
-                            label.setAttribute('for', val.type + "-" + key);
-                            label.textContent = val.information.name;
-                            filterGroup.appendChild(label);
+                        var label = document.createElement('label');
+                        label.setAttribute('for', val.type + "-" + key);
+                        label.textContent = val.information.name;
+                        filterGroup.appendChild(label);
 
-                            // When the checkbox changes, update the visibility of the layer.
-                            input.addEventListener('change', function (e) {
-                                map.setLayoutProperty(val.type + "-" + key, 'visibility',
-                                    e.target.checked ? 'visible' : 'none');
-                            });
+                        // When the checkbox changes, update the visibility of the layer.
+                        input.addEventListener('change', function (e) {
+                            map.setLayoutProperty(val.type + "-" + key, 'visibility',
+                                e.target.checked ? 'visible' : 'none');
                         });
                     });
                 });
-                map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
             });
+            map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
+        });
 
-            //add iceburg, rig, ship
-            var impactZone = {
-                width: size,
-                height: size,
-                data: new Uint8Array(size * size * 4),
-                onAdd: function () {
-                    var canvas = document.createElement('canvas');
-                    canvas.width = this.width;
-                    canvas.height = this.height;
-                    this.context = canvas.getContext('2d');
-                },
-                render: function () {
-                    var duration = 1000;
-                    var t = (performance.now() % duration) / duration;
-                    var scale = 1;
-                    var radius = scale * size / 2 * 0.3;
-                    var outerRadius = scale * size / 2 * 0.7 * t + radius;
-                    var context = this.context;
-                    // draw outer circle
-                    context.clearRect(0, 0, this.width, this.height);
-                    context.beginPath();
-                    context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
-                    context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
-                    context.fill();
-                    // draw inner circle
-                    context.beginPath();
-                    context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
-                    context.fillStyle = 'rgba(255, 255, 255, 0)';
-                    context.strokeStyle = 'transparent';
-                    context.lineWidth = 2 + 4 * (1 - t);
-                    context.fill();
-                    context.stroke();
-                    // update this image's data with data from the canvas
-                    this.data = context.getImageData(0, 0, this.width, this.height).data;
-                    // keep the map repainting
-                    map.triggerRepaint();
-                    // return `true` to let the map know that the image was updated
-                    return true;
-                }
+        //add iceburg, rig, ship
+        var impactZone = {
+            width: size,
+            height: size,
+            data: new Uint8Array(size * size * 4),
+            onAdd: function () {
+                var canvas = document.createElement('canvas');
+                canvas.width = this.width;
+                canvas.height = this.height;
+                this.context = canvas.getContext('2d');
+            },
+            render: function () {
+                var duration = 1000;
+                var t = (performance.now() % duration) / duration;
+                var scale = 1;
+                var radius = scale * size / 2 * 0.3;
+                var outerRadius = scale * size / 2 * 0.7 * t + radius;
+                var context = this.context;
+                // draw outer circle
+                context.clearRect(0, 0, this.width, this.height);
+                context.beginPath();
+                context.arc(this.width / 2, this.height / 2, outerRadius, 0, Math.PI * 2);
+                context.fillStyle = 'rgba(255, 200, 200,' + (1 - t) + ')';
+                context.fill();
+                // draw inner circle
+                context.beginPath();
+                context.arc(this.width / 2, this.height / 2, radius, 0, Math.PI * 2);
+                context.fillStyle = 'rgba(255, 255, 255, 0)';
+                context.strokeStyle = 'transparent';
+                context.lineWidth = 2 + 4 * (1 - t);
+                context.fill();
+                context.stroke();
+                // update this image's data with data from the canvas
+                this.data = context.getImageData(0, 0, this.width, this.height).data;
+                // keep the map repainting
+                map.triggerRepaint();
+                // return `true` to let the map know that the image was updated
+                return true;
             }
-        </script>
+        }
 
-        <div id='filter-group' class='filter-group'>
+        function isEmpty(obj) {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key))
+                    return false;
+            }
+            return true;
+        }
+    </script>
 
-        </div>
+    <div id='filter-group' class='filter-group'>
 
-        <div id="card">
-            <h3>Information</h3>
-            <div>
-                <div id="infoName" class="infobar">
+    </div>
 
-                </div>
-                <div id="infoSize" class="infobar">
+    <div id="card">
+        <h3>Information</h3>
+        <div>
+            <div id="infoName" class="infobar">
 
-                </div>
-                <div id="infoLa" class="infobar">
-
-                </div>
-                <div id="infoLo" class="infobar">
-
-                </div>
             </div>
+            <div id="infoSize" class="infobar">
+
+            </div>
+            <div id="infoLa" class="infobar">
+
+            </div>
+            <div id="infoLo" class="infobar">
+
+            </div>
+        </div>
 
     </div>
 </body>

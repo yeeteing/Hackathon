@@ -4,7 +4,7 @@
 		"type": "ship",
 		"status": {
 			"type": "mobile",
-			"message": " "
+			"message": ""
 		},
 		"information": {
             "name": "Maersk Detector",
@@ -18,13 +18,15 @@
 		"type": "iceberg",
 		"status": {
 			"type": "mobile",
-			"message": "NA"
+			"message": ""
 		},
 		"information": {
             "name": "Iceberg 120",
 			"size": "large",
 			"latitude":  47.2000,
-			"longitude": -48.0158
+			"longitude": -48.0158,
+			"vid": "IceBerg.mp4",
+			"file": "BBC_iceberg_point.pdf"
 		}
 	},
 	"3": {
@@ -144,13 +146,14 @@
 		"type": "iceberg",
 		"status": {
 			"type": "mobile",
-			"message": "NA"
+			"message": ""
 		},
 		"information": {
             "name": "Iceberg 121",
 			"size": "large",
 			"latitude":  47.1000,
-			"longitude": -48.500
+			"longitude": -48.500,
+			"file": "TW01texturemesh.pdf"
 		}
 	},
 	"12": {
@@ -158,7 +161,7 @@
 		"type": "iceberg",
 		"status": {
 			"type": "mobile",
-			"message": "NA"
+			"message": ""
 		},
 		"information": {
             "name": "Iceberg 122",

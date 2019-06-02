@@ -4,7 +4,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css' rel='stylesheet' />
-    <title>Grand Bank Information Network</title>
+    <title>Grand Banks Information Network</title>
     <style>
         body {
             background-color: rgb(49, 45, 45);
@@ -70,7 +70,7 @@
 <body>
     <div id="ti">
         <h2>
-            Grand Bank Information Network
+            Grand Banks Information Network
 
         </h2>
     </div>
@@ -230,13 +230,13 @@
 
                             var fileLink = val.information.file;
                             if(!isEmpty(fileLink)){
-                                var f = "<br /><a target='_blank' href='" + fileLink + "'>File</a>";
+                                var f = "<br /><a href='" + fileLink + "'>File</a>";
                                 description = description + f;
                             }
 
                             var vidLink = val.information.vid;
                             if(!isEmpty(vidLink)){
-                                var v = "<br /><a target='_blank' href='" + vidLink + "'>Video</a>";
+                                var v = "<br /><a href='" + vidLink + "'>Video</a>";
                                 description = description + v;
                             }
 

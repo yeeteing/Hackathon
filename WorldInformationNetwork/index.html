@@ -131,7 +131,6 @@
                         var layerID = val.type + "-" + key;
 
                         if (iconClass == "ship") {
-<<<<<<< HEAD
                             imgType =
                                 "https://i.ibb.co/HXzzmgF/Webp-net-resizeimage.png";
                         } else if (iconClass == "iceberg") {
@@ -140,13 +139,6 @@
                         } else if (iconClass == "rig") {
                             imgType =
                                 "https://i.ibb.co/b5YjYFp/Webp-net-resizeimage-2.png";
-=======
-                            imgType = "https://i.ibb.co/HXzzmgF/Webp-net-resizeimage.png";
-                        } else if (iconClass == "iceberg") {
-                            imgType = "https://i.ibb.co/r6PqCwZ/Webp-net-resizeimage-1.png";
-                        } else if (iconClass == "rig") {
-                            imgType = "https://i.ibb.co/b5YjYFp/Webp-net-resizeimage-2.png";
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
                         }
                         map.loadImage(imgType, function (error, image) {
                             if (error) throw error;
@@ -162,7 +154,6 @@
                                         "features": [{
                                             "type": "Feature",
                                             "properties": {
-<<<<<<< HEAD
                                                 "description": "<strong>" +
                                                     val
                                                     .information
@@ -181,44 +172,10 @@
                                                     .information
                                                     .latitude
                                                 ]
-=======
-                                                "description": "<strong>" + val.information.name + "</strong><br />" + val.status.message
-                                            },
-                                            "geometry": {
-                                                "type": "Point",
-                                                "coordinates": [val.information.longitude, val.information.latitude]
                                             }
                                         }]
                                     }
                                 },
-                                layout: {
-                                    "icon-image": val.type + key,
-                                    "icon-allow-overlap": true
-                                }
-                            });
-                        });
-                        if (val.status.type == "alert") {
-                            map.addImage('impact-zone', impactZone, {
-                                pixelRatio: 2
-                            });
-                            map.addLayer({
-                                "id": val.type + "-" + key + key,
-                                "type": "symbol",
-                                "source": {
-                                    "type": "geojson",
-                                    "data": {
-                                        "type": "FeatureCollection",
-                                        "features": [{
-                                            "type": "Feature",
-                                            "geometry": {
-                                                "type": "Point",
-                                                "coordinates": [val.information.longitude, val.information.latitude]
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
-                                            }
-                                        }]
-                                    }
-                                },
-<<<<<<< HEAD
                                 layout: {
                                     "icon-image": val.type + key,
                                     "icon-allow-overlap": true
@@ -275,55 +232,18 @@
                                 coordinates[0] += e.lngLat.lng > coordinates[
                                     0] ? 360 : -360;
                             }
-=======
-                                "layout": {
-                                    "icon-image": "impact-zone",
-                                    "icon-allow-overlap": true
-                                }
-                            });
-                        }
-                        // When a click event occurs on a feature in the places layer, open a popup at the
-                        // location of the feature, with description HTML from its properties.
-                        map.on('click', val.type + "-" + key, function (e) {
-                            var coordinates = e.features[0].geometry.coordinates.slice();
-                            var description = e.features[0].properties.description;
-
-                            var fileName = val.information.file;
-                            if (!isEmpty(fileName)){
-                                var fileLink = "<br /><a href='" + fileName + "'>File</a>";
-                                description = description + fileLink;
-                            }
-
-                            var videoName = val.information.vid;
-                            if (!isEmpty(videoName)){
-                                var vidLink = "<br /><a href='" + videoName + "'>Video</a>";
-                                description = description + vidLink;
-                            }
-                                // Ensure that if the map is zoomed out such that multiple
-                                // copies of the feature are visible, the popup appears
-                                // over the copy being pointed to.
-
-                                while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                                    coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-                                }
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
                             new mapboxgl.Popup()
                                 .setLngLat(coordinates)
                                 .setHTML(description)
                                 .addTo(map);
 
-<<<<<<< HEAD
                             document.getElementById("card").style.visibility =
                                 "visible";
-=======
-                            document.getElementById("card").style.visibility = "visible";
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
                             document.getElementById("map").style.width = "68%";
 
 
                             var textNa = "Name: " + val.information.name;
                             var textSi = "Size: " + val.information.size;
-<<<<<<< HEAD
                             var textla = "Latitude: " + val.information
                             .latitude;
                             var textlo = "longitude: " + val.information
@@ -336,14 +256,6 @@
                             textla;
                             document.getElementById('infoLo').innerHTML =
                             textlo;
-=======
-                            var textla = "Latitude: " + val.information.latitude;
-                            var textlo = "longitude: " + val.information.longitude;
-                            document.getElementById('infoName').innerHTML = textNa;
-                            document.getElementById('infoSize').innerHTML = textSi;
-                            document.getElementById('infoLa').innerHTML = textla;
-                            document.getElementById('infoLo').innerHTML = textlo;
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
                         });
                         // Change the cursor to a pointer when the mouse is over the places layer.
                         map.on('mouseenter', val.type + "-" + key, function () {
@@ -368,24 +280,16 @@
 
                         // When the checkbox changes, update the visibility of the layer.
                         input.addEventListener('change', function (e) {
-<<<<<<< HEAD
                             map.setLayoutProperty(val.type + "-" + key,
                                 'visibility',
-=======
-                            map.setLayoutProperty(val.type + "-" + key, 'visibility',
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
                                 e.target.checked ? 'visible' : 'none');
                         });
                     });
                 });
             });
-<<<<<<< HEAD
             map.addImage('pulsing-dot', pulsingDot, {
                 pixelRatio: 2
             });
-=======
-            map.addImage('pulsing-dot', pulsingDot, { pixelRatio: 2 });
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
         });
 
         //add iceburg, rig, ship
@@ -426,7 +330,6 @@
                 map.triggerRepaint();
                 // return `true` to let the map know that the image was updated
                 return true;
-<<<<<<< HEAD
             }
         }
 
@@ -495,39 +398,6 @@
             </div>
 
 
-=======
-            }
-        }
-
-        function isEmpty(obj) {
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key))
-                    return false;
-            }
-            return true;
-        }
-    </script>
-
-    <div id='filter-group' class='filter-group'>
-
-    </div>
-
-    <div id="card">
-        <h3>Information</h3>
-        <div>
-            <div id="infoName" class="infobar">
-
-            </div>
-            <div id="infoSize" class="infobar">
-
-            </div>
-            <div id="infoLa" class="infobar">
-
-            </div>
-            <div id="infoLo" class="infobar">
-
-            </div>
->>>>>>> 7c183d96487c9ff2dde9494dc1bf33e7db2a8b7d
         </div>
 
     </div>

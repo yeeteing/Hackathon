@@ -230,13 +230,13 @@
 
                             var fileLink = val.information.file;
                             if(!isEmpty(fileLink)){
-                                var f = "<br /><a href='" + fileLink + "'>File</a>";
+                                var f = "<br /><a target='_blank' href='" + fileLink + "'>File</a>";
                                 description = description + f;
                             }
 
                             var vidLink = val.information.vid;
                             if(!isEmpty(vidLink)){
-                                var v = "<br /><a href='" + vidLink + "'>Video</a>";
+                                var v = "<br /><a target='_blank' href='" + vidLink + "'>Video</a>";
                                 description = description + v;
                             }
 

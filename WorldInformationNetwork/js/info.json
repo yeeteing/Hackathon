@@ -10,7 +10,8 @@
             "name": "Maersk Detector",
 			"size": "medium",
 			"latitude": 46.9952,
-			"longitude": -50.4987
+			"longitude": -50.4987,
+			"file": "01.jpg"
 		}
 	},
 	"2": {
@@ -34,7 +35,7 @@
 		"type": "ship",
 		"status": {
 			"type": "alert",
-			"message": "Yoko Oh No"
+			"message": "Incoming iceberg"
 		},
 		"information": {
             "name": "Atlantic Osprey",

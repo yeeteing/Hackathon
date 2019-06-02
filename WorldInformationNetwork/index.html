@@ -33,6 +33,7 @@
             width: 30%;
             color: rgb(238, 237, 237);
             visibility: hidden;
+        
             ;
         }
 
@@ -50,13 +51,14 @@
             height: 10%;
             position: fixed;
             bottom: 3.5%;
-            width: 65%;
+            width: 98.99%;
             color: rgb(238, 237, 237);
             background-color: #555;
             padding-left: 2%;
             padding-top: 2%;
             text-align: left;
             opacity: 1;
+            transition: width 1.90s;
         }
     </style>
 </head>
@@ -240,6 +242,7 @@
                             document.getElementById("card").style.visibility =
                                 "visible";
                             document.getElementById("map").style.width = "68%";
+                            document.getElementById("filter-group").style.width = "66%";
 
 
                             var textNa = "Name: " + val.information.name;

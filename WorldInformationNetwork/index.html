@@ -33,7 +33,7 @@
             width: 30%;
             color: rgb(238, 237, 237);
             visibility: hidden;
-        
+
             ;
         }
 
@@ -158,21 +158,21 @@
                                             "properties": {
                                                 "description": "<strong>" +
                                                     val
-                                                    .information
-                                                    .name +
+                                                        .information
+                                                        .name +
                                                     "</strong><br />" +
                                                     val.status
-                                                    .message
+                                                        .message
                                             },
                                             "geometry": {
                                                 "type": "Point",
                                                 "coordinates": [
                                                     val
-                                                    .information
-                                                    .longitude,
+                                                        .information
+                                                        .longitude,
                                                     val
-                                                    .information
-                                                    .latitude
+                                                        .information
+                                                        .latitude
                                                 ]
                                             }
                                         }]
@@ -202,7 +202,7 @@
                                                 "coordinates": [val
                                                     .information
                                                     .longitude, val
-                                                    .information
+                                                        .information
                                                     .latitude
                                                 ]
                                             }
@@ -218,17 +218,27 @@
                         // When a click event occurs on a feature in the places layer, open a popup at the
                         // location of the feature, with description HTML from its properties.
                         map.on('click', val.type + "-" + key, function (e) {
-                            var coordinates = e.features[0].geometry.coordinates
-                                .slice();
-                            var description = e.features[0].properties
-                                .description;
+                            var coordinates = e.features[0].geometry.coordinates.slice();
+                            var description = e.features[0].properties.description;
                             // Ensure that if the map is zoomed out such that multiple
                             // copies of the feature are visible, the popup appears
                             // over the copy being pointed to.
-                            
+
+                            var fileLink = val.information.file;
+                            if(!isEmpty(fileLink)){
+                                var f = "<br /><a href='" + fileLink + "'>File</a>";
+                                description = description + f;
+                            }
+
+                            var vidLink = val.information.vid;
+                            if(!isEmpty(vidLink)){
+                                var v = "<br /><a href='" + vidLink + "'>Video</a>";
+                                description = description + v;
+                            }
+
                             //get weather
-                            getWeather([e.lngLat.lat,e.lngLat.lng])
-                          
+                            getWeather([e.lngLat.lat, e.lngLat.lng])
+
                             while (Math.abs(e.lngLat.lng - coordinates[0]) >
                                 180) {
                                 coordinates[0] += e.lngLat.lng > coordinates[
@@ -248,7 +258,7 @@
                             var textNa = "Name: " + val.information.name;
                             var textSi = "Size: " + val.information.size;
                             var textla = "Latitude: " + val.information
-                            .latitude;
+                                .latitude;
                             var textlo = "longitude: " + val.information
                                 .longitude;
                             document.getElementById('infoName').innerHTML =
@@ -256,9 +266,9 @@
                             document.getElementById('infoSize').innerHTML =
                                 textSi;
                             document.getElementById('infoLa').innerHTML =
-                            textla;
+                                textla;
                             document.getElementById('infoLo').innerHTML =
-                            textlo;
+                                textlo;
                         });
                         // Change the cursor to a pointer when the mouse is over the places layer.
                         map.on('mouseenter', val.type + "-" + key, function () {
@@ -357,8 +367,14 @@
                     $("#vis").html(json.visibility);
 
                 });
+        }
 
-
+        function isEmpty(obj) {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key))
+                    return false;
+            }
+            return true;
         }
     </script>
 
@@ -385,19 +401,26 @@
         <h3>Weather</h3>
         <div>
             <div id='weathericonwrap' style='text-align: center'>
-                <img style='vertical-align: middle' id='weathericon'></img><span
-                    style='font-weight: 30;font-size:22;display:inline-block;' id='main'></span>
+                <img style='vertical-align: middle' id='weathericon'></img>
+                <span style='font-weight: 30;font-size:22;display:inline-block;' id='main'></span>
             </div>
 
             <div id='wind' class="infobar">
-                Wind Speed: <span id='ws'></span><br>
-                Wind Degree: <span id='wd'></span> <br>
+                Wind Speed:
+                <span id='ws'></span>
+                <br> Wind Degree:
+                <span id='wd'></span>
+                <br>
             </div>
             <div id='' class='infobar'>
-                Visibility:<span id='vis'></span>
+                Visibility:
+                <span id='vis'></span>
             </div>
             <div id='temperature' class='infobar'>
-                Temperature:<span id='temp'></span> &degC (Max:<span id='maxtemp'></span> &degC, Min:<span id='mintemp'></span> &degC)
+                Temperature:
+                <span id='temp'></span> &degC (Max:
+                <span id='maxtemp'></span> &degC, Min:
+                <span id='mintemp'></span> &degC)
             </div>
 
 

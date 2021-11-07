@@ -1,4 +1,9 @@
 # hackathon
+My teammates and I participated Hacking Oil & Gas Competition organized by NATI & NOIA. 
+
+This is a prototype for my teammate's idea. It showcases real time icebergs' location and weather prediction UI for offshore oil companies. 
+___________________
+
 
 ## Requirements
 - [Python 3](https://www.python.org/downloads/)
